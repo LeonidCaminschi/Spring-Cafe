@@ -26,63 +26,38 @@ public class Dish {
     )
     private List<Ingredient> ingredients;
 
-    public Dish() {
-    }
+    protected Dish() {}
 
     public Dish(String name, String description, int estimatedCookingTime, List<Ingredient> ingredients) {
         this.name = name;
         this.description = description;
         this.estimatedCookingTime = estimatedCookingTime;
         this.ingredients = ingredients;
-        this.price = (int) calcPrice(); // Calculate price based on ingredients
+        this.price = (int) calcPrice();
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public int getPrice() {
         return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public int getEstimatedCookingTime() {
         return estimatedCookingTime;
     }
 
-    public void setEstimatedCookingTime(int estimatedCookingTime) {
-        this.estimatedCookingTime = estimatedCookingTime;
-    }
-
     public List<Ingredient> getIngredients() {
         return ingredients;
-    }
-
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
     }
 
     private float calcPrice() {
