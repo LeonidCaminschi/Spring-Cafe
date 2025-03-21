@@ -1,6 +1,8 @@
 package cafe.springcafe.domain;
 
 import jakarta.persistence.*;
+import org.springframework.data.repository.cdi.Eager;
+
 import java.util.List;
 
 @Entity
@@ -18,7 +20,7 @@ public class Dish {
 
     private int estimatedCookingTime;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "dish_ingredients",
         joinColumns = @JoinColumn(name = "dish_id"),

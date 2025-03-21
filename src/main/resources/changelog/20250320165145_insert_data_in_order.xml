@@ -47,8 +47,28 @@
         </insert>
     </changeSet>
 
-    <!-- Insert Data into Orders Table -->
+    <!-- Insert Data into Dish_Ingredients Table -->
     <changeSet id="20250320165145-4" author="esempla">
+        <insert tableName="dish_ingredients">
+            <column name="dish_id" value="1"/>
+            <column name="ingredient_id" value="1"/>
+        </insert>
+        <insert tableName="dish_ingredients">
+            <column name="dish_id" value="1"/>
+            <column name="ingredient_id" value="2"/>
+        </insert>
+        <insert tableName="dish_ingredients">
+            <column name="dish_id" value="1"/>
+            <column name="ingredient_id" value="3"/>
+        </insert>
+        <insert tableName="dish_ingredients">
+            <column name="dish_id" value="2"/>
+            <column name="ingredient_id" value="1"/>
+        </insert>
+    </changeSet>
+
+    <!-- Insert Data into Orders Table -->
+    <changeSet id="20250320165145-5" author="esempla">
         <insert tableName="orders">
             <column name="cook_id" value="1"/>
             <column name="dish_id" value="1"/>
