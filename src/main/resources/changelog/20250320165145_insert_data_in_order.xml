@@ -7,25 +7,25 @@
 
     <!-- Insert Data into Cook Table -->
     <changeSet id="20250320165145-1" author="esempla">
-        <insert tableName="cook">
+        <insert tableName="cooks">
             <column name="name" value="John Doe"/>
         </insert>
-        <insert tableName="cook">
+        <insert tableName="cooks">
             <column name="name" value="Jane Smith"/>
         </insert>
     </changeSet>
 
     <!-- Insert Data into Ingredient Table -->
     <changeSet id="20250320165145-2" author="esempla">
-        <insert tableName="ingredient">
+        <insert tableName="ingredients">
             <column name="name" value="Cheese"/>
             <column name="price" value="5"/>
         </insert>
-        <insert tableName="ingredient">
+        <insert tableName="ingredients">
             <column name="name" value="Tomato"/>
             <column name="price" value="3"/>
         </insert>
-        <insert tableName="ingredient">
+        <insert tableName="ingredients">
             <column name="name" value="Basil"/>
             <column name="price" value="2"/>
         </insert>
@@ -33,13 +33,13 @@
 
     <!-- Insert Data into Dish Table -->
     <changeSet id="20250320165145-3" author="esempla">
-        <insert tableName="dish">
+        <insert tableName="dishes">
             <column name="name" value="Margherita Pizza"/>
             <column name="description" value="Classic pizza with cheese, tomato, and basil"/>
             <column name="price" value="12"/>
             <column name="estimated_cooking_time" value="15"/>
         </insert>
-        <insert tableName="dish">
+        <insert tableName="dishes">
             <column name="name" value="Pasta Alfredo"/>
             <column name="description" value="Creamy pasta with cheese and herbs"/>
             <column name="price" value="10"/>
@@ -64,18 +64,6 @@
         <insert tableName="dish_ingredients">
             <column name="dish_id" value="2"/>
             <column name="ingredient_id" value="1"/>
-        </insert>
-    </changeSet>
-
-    <!-- Insert Data into Orders Table -->
-    <changeSet id="20250320165145-5" author="esempla">
-        <insert tableName="orders">
-            <column name="cook_id" value="1"/>
-            <column name="dish_id" value="1"/>
-        </insert>
-        <insert tableName="orders">
-            <column name="cook_id" value="2"/>
-            <column name="dish_id" value="2"/>
         </insert>
     </changeSet>
 

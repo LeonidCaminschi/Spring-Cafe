@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity
+@Table(name = "cooks")
 public class Cook {
 
     @Id

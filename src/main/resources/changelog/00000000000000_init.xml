@@ -7,7 +7,7 @@
 
     <!-- Create Ingredient Table -->
     <changeSet id="00000000000000-1" author="esempla">
-        <createTable tableName="ingredient">
+        <createTable tableName="ingredients">
             <column name="id" type="BIGSERIAL" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -22,7 +22,7 @@
 
     <!-- Create Dish Table -->
     <changeSet id="00000000000000-2" author="esempla">
-        <createTable tableName="dish">
+        <createTable tableName="dishes">
             <column name="id" type="BIGSERIAL" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -51,17 +51,17 @@
         </createTable>
         <addForeignKeyConstraint
             baseTableName="dish_ingredients" baseColumnNames="dish_id"
-            referencedTableName="dish" referencedColumnNames="id"
+            referencedTableName="dishes" referencedColumnNames="id"
             constraintName="fk_dish_ingredients_dish"/>
         <addForeignKeyConstraint
             baseTableName="dish_ingredients" baseColumnNames="ingredient_id"
-            referencedTableName="ingredient" referencedColumnNames="id"
+            referencedTableName="ingredients" referencedColumnNames="id"
             constraintName="fk_dish_ingredients_ingredient"/>
     </changeSet>
 
     <!-- Create Cook Table -->
     <changeSet id="00000000000000-4" author="esempla">
-        <createTable tableName="cook">
+        <createTable tableName="cooks">
             <column name="id" type="BIGSERIAL" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -86,11 +86,11 @@
         </createTable>
         <addForeignKeyConstraint
             baseTableName="orders" baseColumnNames="cook_id"
-            referencedTableName="cook" referencedColumnNames="id"
+            referencedTableName="cooks" referencedColumnNames="id"
             constraintName="fk_orders_cook"/>
         <addForeignKeyConstraint
             baseTableName="orders" baseColumnNames="dish_id"
-            referencedTableName="dish" referencedColumnNames="id"
+            referencedTableName="dishes" referencedColumnNames="id"
             constraintName="fk_orders_dish"/>
     </changeSet>
 

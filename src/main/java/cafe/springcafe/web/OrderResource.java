@@ -5,13 +5,15 @@ import cafe.springcafe.service.CookService;
 import cafe.springcafe.service.DishService;
 import cafe.springcafe.service.OrderService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.OK;
 
-@RestController("/order")
+import java.util.Map;
+
+@RestController
 public class OrderResource {
 
     private final OrderService orderService;
@@ -22,20 +24,27 @@ public class OrderResource {
         this.orderService = orderRepository;
         this.dishService = dishService;
         this.cookService = cookService;
-    }
+        }
 
-    @GetMapping("/create")
-    public ResponseEntity<String> countByLeastOrders(
-            @RequestBody String dishName
-    ) {
+        @PostMapping("/order")
+        public ResponseEntity<String> countByLeastOrders(
+            @RequestBody Map<String, String> requestBody) {
+
+        String dishName = requestBody.get("dish");
+
         var cookId = orderService.getIdOfCookWithLeastOrders();
-        if (cookId != null) {
+        if (cookId == null) {
             return ResponseEntity
                     .status(OK)
                     .body("All Cooks are busy at the current time");
         }
 
         var cook = cookService.getCookById(cookId);
+        if (cook == null) {
+            return ResponseEntity
+                    .status(OK)
+                    .body("Cook not found in the kitchen");
+        }
 
         var dish = dishService.getDishbyName(dishName);
         if (dish == null) {

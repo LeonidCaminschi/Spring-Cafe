@@ -6,6 +6,7 @@ import org.springframework.data.repository.cdi.Eager;
 import java.util.List;
 
 @Entity
+@Table(name = "dishes")
 public class Dish {
 
     @Id

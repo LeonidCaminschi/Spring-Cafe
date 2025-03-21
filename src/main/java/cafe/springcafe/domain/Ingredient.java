@@ -3,6 +3,7 @@ package cafe.springcafe.domain;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "ingredients")
 public class Ingredient {
 
     @Id
