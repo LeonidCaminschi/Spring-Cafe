@@ -2,7 +2,6 @@ package cafe.springcafe.web;
 
 import cafe.springcafe.domain.Dish;
 import cafe.springcafe.service.DishService;
-import org.springframework.data.repository.cdi.Eager;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
