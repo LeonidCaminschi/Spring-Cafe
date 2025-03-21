@@ -13,7 +13,7 @@ public class CookService {
         this.repository = repository;
     }
 
-    void save(Cook cook) {
-        repository.save(cook);
+    public Cook getCookById(Long id){
+        return repository.getCookById(id);
     }
 }

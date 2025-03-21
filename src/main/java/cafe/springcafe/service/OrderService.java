@@ -1,5 +1,6 @@
 package cafe.springcafe.service;
 
+import cafe.springcafe.domain.Order;
 import cafe.springcafe.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +13,12 @@ public class OrderService {
         this.repository = repository;
     }
 
-    public Long countByLeastOrders() {
+    public Long getIdOfCookWithLeastOrders() {
         return repository.getIdOfCookWithLeastOrders();
+    }
+
+    public void save(Order order) {
+        repository.save(order);
     }
 
 }

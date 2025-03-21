@@ -11,5 +11,6 @@
     <property name="datetimeType" value="datetime" dbms="postgresql"/>
 
     <include file="/changelog/00000000000000_init.xml" relativeToChangelogFile="false"/>
+    <include file="/changelog/20250320165145_insert_data_in_order.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

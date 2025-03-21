@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <!-- Insert Data into Cook Table -->
+    <changeSet id="20250320165145-1" author="esempla">
+        <insert tableName="cook">
+            <column name="name" value="John Doe"/>
+        </insert>
+        <insert tableName="cook">
+            <column name="name" value="Jane Smith"/>
+        </insert>
+    </changeSet>
+
+    <!-- Insert Data into Ingredient Table -->
+    <changeSet id="20250320165145-2" author="esempla">
+        <insert tableName="ingredient">
+            <column name="name" value="Cheese"/>
+            <column name="price" value="5"/>
+        </insert>
+        <insert tableName="ingredient">
+            <column name="name" value="Tomato"/>
+            <column name="price" value="3"/>
+        </insert>
+        <insert tableName="ingredient">
+            <column name="name" value="Basil"/>
+            <column name="price" value="2"/>
+        </insert>
+    </changeSet>
+
+    <!-- Insert Data into Dish Table -->
+    <changeSet id="20250320165145-3" author="esempla">
+        <insert tableName="dish">
+            <column name="name" value="Margherita Pizza"/>
+            <column name="description" value="Classic pizza with cheese, tomato, and basil"/>
+            <column name="price" value="12"/>
+            <column name="estimated_cooking_time" value="15"/>
+        </insert>
+        <insert tableName="dish">
+            <column name="name" value="Pasta Alfredo"/>
+            <column name="description" value="Creamy pasta with cheese and herbs"/>
+            <column name="price" value="10"/>
+            <column name="estimated_cooking_time" value="20"/>
+        </insert>
+    </changeSet>
+
+    <!-- Insert Data into Orders Table -->
+    <changeSet id="20250320165145-4" author="esempla">
+        <insert tableName="orders">
+            <column name="cook_id" value="1"/>
+            <column name="dish_id" value="1"/>
+        </insert>
+        <insert tableName="orders">
+            <column name="cook_id" value="2"/>
+            <column name="dish_id" value="2"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
