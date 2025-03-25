@@ -7,13 +7,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class CookService {
 
-    private CookRepository repository;
+    private CookRepository cookRepository;
 
     public CookService(CookRepository repository) {
-        this.repository = repository;
+        this.cookRepository = repository;
     }
 
     public Cook getCookById(Long id){
-        return repository.getCookById(id);
+        return cookRepository.getCookById(id);
+    }
+
+    public void save(Cook cook){
+        cookRepository.save(cook);
     }
 }
