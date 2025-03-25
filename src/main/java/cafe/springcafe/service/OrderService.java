@@ -1,8 +1,10 @@
 package cafe.springcafe.service;
 
-import cafe.springcafe.dto.CookOrderCount;
 import cafe.springcafe.domain.Order;
+import cafe.springcafe.projection.ICookOrderCount;
 import cafe.springcafe.repository.OrderRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,13 +12,15 @@ import java.util.List;
 @Service
 public class OrderService {
 
+    private final Logger LOG = LoggerFactory.getLogger(OrderService.class);
+
     private final OrderRepository repository;
 
     public OrderService(OrderRepository repository) {
         this.repository = repository;
     }
 
-    public List<CookOrderCount> getIdOfCookWithLeastOrders() {
+    public List<ICookOrderCount> getIdOfCooksWithOrderCount() {
         return repository.getCookOrderCounts();
     }
 

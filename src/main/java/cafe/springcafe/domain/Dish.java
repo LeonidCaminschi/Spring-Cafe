@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.data.repository.cdi.Eager;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "dishes")
@@ -13,13 +14,17 @@ public class Dish {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
     private String description;
 
-    private int price;
+    @Column(name = "price")
+    private Integer price;
 
-    private int estimatedCookingTime;
+    @Column(name = "estimated_cooking_time")
+    private Integer estimatedCookingTime;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -29,7 +34,7 @@ public class Dish {
     )
     private List<Ingredient> ingredients;
 
-    protected Dish() {}
+    public Dish() {}
 
     public Dish(String name, String description, int estimatedCookingTime, List<Ingredient> ingredients) {
         this.name = name;
@@ -51,11 +56,11 @@ public class Dish {
         return description;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public int getEstimatedCookingTime() {
+    public Integer getEstimatedCookingTime() {
         return estimatedCookingTime;
     }
 
@@ -69,6 +74,41 @@ public class Dish {
             intermediaryPrice += ingredient.getPrice();
         }
         return intermediaryPrice * 1.2f;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setEstimatedCookingTime(int estimatedCookingTime) {
+        this.estimatedCookingTime = estimatedCookingTime;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Dish dish)) return false;
+        return price == dish.price && estimatedCookingTime == dish.estimatedCookingTime && Objects.equals(id, dish.id) && Objects.equals(name, dish.name) && Objects.equals(description, dish.description) && Objects.equals(ingredients, dish.ingredients);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, price, estimatedCookingTime, ingredients);
     }
 
     @Override

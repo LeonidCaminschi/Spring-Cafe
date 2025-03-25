@@ -1,8 +1,9 @@
 package cafe.springcafe.web;
 
-import cafe.springcafe.dto.CookOrderCount;
+import cafe.springcafe.config.Config;
 import cafe.springcafe.domain.Order;
 import cafe.springcafe.dto.CreateOrderRequest;
+import cafe.springcafe.projection.ICookOrderCount;
 import cafe.springcafe.service.CookService;
 import cafe.springcafe.service.DishService;
 import cafe.springcafe.service.OrderService;
@@ -15,9 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.HttpStatus.OK;
+import java.util.List;
 
-import java.util.Map;
+import static cafe.springcafe.config.Config.*;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 public class OrderResource {
@@ -41,45 +43,52 @@ public class OrderResource {
         public ResponseEntity<String> countByLeastOrders(
             @RequestBody CreateOrderRequest request) {
 
-        String dishName = request.getDish();
+        String dishName = request.dish();
 
-        var cooksOrderCounts = orderService.getIdOfCookWithLeastOrders();
-        if (cooksOrderCounts == null) {
+        List<ICookOrderCount> cooksOrderCounts = orderService.getIdOfCooksWithOrderCount();
+        if (cooksOrderCounts.isEmpty()) {
             return ResponseEntity
                     .status(OK)
-                    .body("No current cooks employed at the facility");
+                    .body(Config.NO_CURRENT_COOKS_EMPLOYED_AT_THE_FACILITY);
         }
 
         var dish = dishService.getDishbyName(dishName);
-        if (dish == null) {
+
+        if (dish.isEmpty()) {
             return ResponseEntity
-                    .status(OK)
-                    .body("Dish not found in the menu");
+                    .status(400)
+                    .body(DISH_NOT_FOUND_IN_THE_MENU);
         }
 
-        CookOrderCount minCookOrderCount = cooksOrderCounts.get(1);
-        for (CookOrderCount cookOrderCount : cooksOrderCounts) {
-            if (cookOrderCount.getCount() >= 5) {
+        ICookOrderCount minCookOrderCountResponse = cooksOrderCounts.get(1);
+        for (ICookOrderCount cookOrderCountResponse : cooksOrderCounts) {
+            if (cookOrderCountResponse.getACount() >= 5) {
                 continue;
             }
-            if (minCookOrderCount.getCount() > cookOrderCount.getCount()) {
-                minCookOrderCount = cookOrderCount;
+            if (minCookOrderCountResponse.getACount() > cookOrderCountResponse.getACount()) {
+                minCookOrderCountResponse = cookOrderCountResponse;
             }
         }
 
-        if (minCookOrderCount.getCount() >= 5) {
+        if (minCookOrderCountResponse.getACount() >= 5) {
             return ResponseEntity
                     .status(OK)
-                    .body("All cooks are busy at the moment");
+                    .body(ALL_COOKS_ARE_BUSY_AT_THE_MOMENT);
         }
 
-        var cookTakingOrder = cookService.getCookById(minCookOrderCount.getCook_id());
+        var cookTakingOrder = cookService.getCookById(minCookOrderCountResponse.getCookId());
 
-        orderService.save(new Order(cookTakingOrder, dish));
+        if (cookTakingOrder.isEmpty()) {
+            return ResponseEntity
+                    .status(400)
+                    .body(COOK_NOT_FOUND_FOR_THE_GIVEN_ID);
+        }
+        
+        orderService.save(new Order(cookTakingOrder.get(), dish.get()));
 
         return ResponseEntity
                 .status(OK)
-                .body("Succesfuly added order");
+                .body(SUCCESFULY_ADDED_ORDER);
     }
 
 }

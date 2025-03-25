@@ -2,12 +2,17 @@ package cafe.springcafe.service;
 
 import cafe.springcafe.domain.Dish;
 import cafe.springcafe.repository.DishRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DishService {
+
+    private final Logger LOG = LoggerFactory.getLogger(DishService.class);
 
     private final DishRepository dishRepository;
 
@@ -15,7 +20,7 @@ public class DishService {
         this.dishRepository = dishRepository;
     }
 
-    public Dish getDishbyName(String dishName) {
+    public Optional<Dish> getDishbyName(String dishName) {
         return dishRepository.getDishByName(dishName);
     }
 
