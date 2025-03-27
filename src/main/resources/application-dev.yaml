@@ -3,3 +3,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/test
     username: postgres
     password: admin
+
+minio:
+  url: http://localhost:9000
+  bucket: development
+  username: minioadmin
+  password: minioadmin

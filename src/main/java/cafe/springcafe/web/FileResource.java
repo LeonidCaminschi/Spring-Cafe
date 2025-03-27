@@ -1,9 +1,7 @@
 package cafe.springcafe.web;
 
 import cafe.springcafe.dto.DownloadFileRequest;
-import io.minio.GetObjectArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import cafe.springcafe.service.MinioService;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,49 +16,42 @@ import java.io.InputStream;
 @RestController
 @RequestMapping("/file")
 public class FileResource {
-    MinioClient minioClient =
-            MinioClient.builder()
-                    .endpoint("http://localhost:9000") // TODO: custom application.properties
-                    .credentials("minioadmin", "minioadmin") // TODO: same here
-                    .build();
 
-    Logger logger = LoggerFactory.getLogger(FileResource.class);
+    private final MinioService minioService;
+    private final Logger logger = LoggerFactory.getLogger(FileResource.class);
+
+    public FileResource(MinioService minioService) {
+        this.minioService = minioService;
+    }
 
     @PostMapping("/upload")
     public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) {
         try (InputStream inputStream = file.getInputStream()) {
-            minioClient.putObject(PutObjectArgs
-                    .builder()
-                    .bucket("confidential")
-                    .object(file.getOriginalFilename())
-                    .stream(inputStream, file.getSize(), -1)
-                    .build());
-
+            minioService.uploadFile(
+                    file.getOriginalFilename(),
+                    inputStream,
+                    file.getContentType()
+            );
             return ResponseEntity.ok("File uploaded successfully: " + file.getOriginalFilename());
         } catch (Exception e) {
+            logger.error("Error uploading file: {}", e.getMessage(), e);
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
         }
     }
 
     @PostMapping("/download")
     public ResponseEntity<byte[]> download(@RequestBody DownloadFileRequest request) {
-        try {
-            InputStream stream =
-                    minioClient.getObject(GetObjectArgs
-                            .builder()
-                            .bucket("confidential")
-                            .object(request.fileName())
-                            .build());
-
+        try (InputStream stream = minioService.downloadFile(request.fileName())) {
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_PNG);
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             headers.setContentDispositionFormData("attachment", request.fileName());
 
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(IOUtils.toByteArray(stream));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(e.getMessage().getBytes());
+            logger.error("Error downloading file: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).body(("Error downloading file: " + e.getMessage()).getBytes());
         }
     }
 }
