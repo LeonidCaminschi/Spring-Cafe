@@ -24,7 +24,7 @@ public class FileResource {
         this.minioService = minioService;
     }
 
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload",  consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) {
         try (InputStream inputStream = file.getInputStream()) {
             minioService.uploadFile(

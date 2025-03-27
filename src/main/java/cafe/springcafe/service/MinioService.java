@@ -1,7 +1,9 @@
 package cafe.springcafe.service;
 
 import cafe.springcafe.config.MinioProperties;
+import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
+import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import org.slf4j.Logger;
@@ -23,6 +25,27 @@ public class MinioService {
                 .credentials(minioProperties.getUsername(), minioProperties.getPassword())
                 .build();
         this.bucketName = minioProperties.getBucket();
+
+        ensureBucketExists();
+    }
+
+    private void ensureBucketExists() {
+        try {
+            boolean bucketExists = minioClient.bucketExists(BucketExistsArgs.builder()
+                    .bucket(bucketName)
+                    .build());
+            if (!bucketExists) {
+                minioClient.makeBucket(MakeBucketArgs.builder()
+                        .bucket(bucketName)
+                        .build());
+                logger.info("Bucket '{}' created successfully.", bucketName);
+            } else {
+                logger.info("Bucket '{}' already exists.", bucketName);
+            }
+        } catch (Exception e) {
+            logger.error("Error checking or creating bucket '{}': {}", bucketName, e.getMessage(), e);
+            throw new RuntimeException("Failed to ensure bucket exists: " + bucketName, e);
+        }
     }
 
     public void uploadFile(String objectName, InputStream inputStream, String contentType) throws Exception {
