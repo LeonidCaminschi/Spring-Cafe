@@ -11,16 +11,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static cafe.springcafe.config.Config.COOK_WAS_ADDED_SUCCESSFULLY;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
 
-@RestController("/cook")
+@RestController
+@RequestMapping("/cook")
 public class CookResource {
 
-    public static final String COOK_WAS_ADDED_SUCCESSFULLY = "cook, was added successfully";
-    private final Logger LOG = LoggerFactory.getLogger(CookResource.class);
+    private final Logger log = LoggerFactory.getLogger(CookResource.class);
 
     private final CookService cookService;
 

@@ -1,7 +1,6 @@
 package cafe.springcafe.domain;
 
 import jakarta.persistence.*;
-import org.springframework.data.repository.cdi.Eager;
 
 import java.util.List;
 import java.util.Objects;

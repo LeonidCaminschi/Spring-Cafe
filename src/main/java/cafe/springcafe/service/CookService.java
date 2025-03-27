@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class CookService {
 
-    private final Logger LOG = LoggerFactory.getLogger(CookService.class);
+    private final Logger log = LoggerFactory.getLogger(CookService.class);
 
     private final CookRepository cookRepository;
 

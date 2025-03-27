@@ -1,8 +1,7 @@
 package cafe.springcafe.domain;
 
 import jakarta.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
+
 import java.util.Objects;
 
 @Entity

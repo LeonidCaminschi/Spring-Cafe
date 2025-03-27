@@ -3,6 +3,7 @@ package cafe.springcafe.web;
 import cafe.springcafe.config.Config;
 import cafe.springcafe.domain.Order;
 import cafe.springcafe.dto.CreateOrderRequest;
+import cafe.springcafe.exception.BadRequestException;
 import cafe.springcafe.projection.ICookOrderCount;
 import cafe.springcafe.service.CookService;
 import cafe.springcafe.service.DishService;
@@ -11,6 +12,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +26,8 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 public class OrderResource {
+
+    private final Logger log = LoggerFactory.getLogger(OrderResource.class);
 
     private final OrderService orderService;
     private final DishService dishService;
@@ -52,13 +57,8 @@ public class OrderResource {
                     .body(Config.NO_CURRENT_COOKS_EMPLOYED_AT_THE_FACILITY);
         }
 
-        var dish = dishService.getDishbyName(dishName);
-
-        if (dish.isEmpty()) {
-            return ResponseEntity
-                    .status(400)
-                    .body(DISH_NOT_FOUND_IN_THE_MENU);
-        }
+        var dish = dishService.getDishbyName(dishName)
+                .orElseThrow(() -> new BadRequestException(DISH_NOT_FOUND_IN_THE_MENU));
 
         ICookOrderCount minCookOrderCountResponse = cooksOrderCounts.get(1);
         for (ICookOrderCount cookOrderCountResponse : cooksOrderCounts) {
@@ -76,19 +76,15 @@ public class OrderResource {
                     .body(ALL_COOKS_ARE_BUSY_AT_THE_MOMENT);
         }
 
-        var cookTakingOrder = cookService.getCookById(minCookOrderCountResponse.getCookId());
-
-        if (cookTakingOrder.isEmpty()) {
-            return ResponseEntity
-                    .status(400)
-                    .body(COOK_NOT_FOUND_FOR_THE_GIVEN_ID);
-        }
+        var cookTakingOrder = cookService.getCookById(minCookOrderCountResponse.getCookId())
+                .orElseThrow(() -> new BadRequestException(COOK_NOT_FOUND_FOR_THE_GIVEN_ID));
         
-        orderService.save(new Order(cookTakingOrder.get(), dish.get()));
+        orderService.save(new Order(cookTakingOrder, dish));
 
         return ResponseEntity
                 .status(OK)
-                .body(SUCCESFULY_ADDED_ORDER);
-    }
+                .body(SUCCESSFULLY_ADDED_ORDER);
+        }
+
 
 }

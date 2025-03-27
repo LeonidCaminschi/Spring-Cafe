@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class OrderService {
 
-    private final Logger LOG = LoggerFactory.getLogger(OrderService.class);
+    private final Logger log = LoggerFactory.getLogger(OrderService.class);
 
     private final OrderRepository repository;
 

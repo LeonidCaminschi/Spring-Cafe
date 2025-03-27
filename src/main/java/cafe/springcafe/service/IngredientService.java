@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class IngredientService {
 
-    private final Logger LOG = LoggerFactory.getLogger(IngredientService.class);
+    private final Logger log = LoggerFactory.getLogger(IngredientService.class);
 
     private final IngredientRepository ingredientRepository;
 

@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public class DishService {
 
-    private final Logger LOG = LoggerFactory.getLogger(DishService.class);
+    private final Logger log = LoggerFactory.getLogger(DishService.class);
 
     private final DishRepository dishRepository;
 

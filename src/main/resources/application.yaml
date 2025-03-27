@@ -1,9 +1,5 @@
 spring:
   application:
     name: Spring-Cafe
-  datasource:
-    url: jdbc:postgresql://localhost:5432/test
-    username: postgres
-    password: admin
   liquibase:
     change-log: master.xml
