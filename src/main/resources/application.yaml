@@ -1,5 +1,15 @@
 spring:
   application:
     name: Spring-Cafe
+  datasource:
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/test}
+    username: ${POSTGRES_USERNAME:postgres}
+    password: ${POSTGRES_PASSWORD:admin}
   liquibase:
     change-log: master.xml
+
+minio:
+  url: ${MINIO_URL:http://localhost:9000}
+  bucket: ${MINIO_BUCKET:development}
+  username: ${MINIO_USERNAME:minioadmin}
+  password: ${MINIO_PASSWORD:minioadmin}
