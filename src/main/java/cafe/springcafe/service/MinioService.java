@@ -6,6 +6,7 @@ import io.minio.GetObjectArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,11 +26,10 @@ public class MinioService {
                 .credentials(minioProperties.getUsername(), minioProperties.getPassword())
                 .build();
         this.bucketName = minioProperties.getBucket();
-
-        ensureBucketExists();
     }
 
-    private void ensureBucketExists() {
+    @PostConstruct
+    public void init() {
         try {
             boolean bucketExists = minioClient.bucketExists(BucketExistsArgs.builder()
                     .bucket(bucketName)
