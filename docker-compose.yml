@@ -1,0 +1,38 @@
+services:
+  minio:
+    image: 'bitnami/minio:latest'
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - data-1:/data1
+      - data-2:/data2
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+      - MINIO_BUCKETS="development,production"
+
+  db:
+    image: postgres
+    ports:
+      - '5433:5432'
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: production
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  spring-cafe:
+    image: 'trueleonidas/spring-cafe:latest'
+    pull_policy: always
+    ports:
+      - '8081:8080'
+    depends_on:
+      - minio
+      - db
+
+volumes:
+  data-1:
+  data-2:
+  pgdata:
